@@ -1,3 +1,7 @@
 {
-  "python.linting.pylintEnabled": false
+  "python.linting.pylintEnabled": false,
+  "git.ignoreLimitWarning": true,
+  "python.formatting.provider": "yapf",
+  "editor.tabSize": 2,
+  "editor.autoIndent": false
 }
