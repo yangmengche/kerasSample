@@ -38,13 +38,12 @@ data = data[indices]
 labels = labels[indices]
 x_train = data[:training_samples]
 y_train = labels[:training_samples]
-x_val = data[training_samples + validation_samples]
-y_val = labels[training_samples: training_samples]
+x_val = data[training_samples: training_samples + validation_samples]
+y_val = labels[training_samples: training_samples + validation_samples]
 
-
+# download from https://nlp.stanford.edu/projects/glove/
 glove_dir = './imdb/glove'
 embeddings_index = {}
-# download from https://nlp.stanford.edu/projects/glove/
 with open(os.path.join(glove_dir, 'glove.6B.100d.txt')) as f:
   for line in f:
     values = line.split()
@@ -69,6 +68,7 @@ from keras import layers
 model = models.Sequential()
 model.add(layers.Embedding(max_words, embedding_dim, input_length=maxlen))
 model.add(layers.Flatten())
+model.add(layers.Dense(32, activation='relu'))
 model.add(layers.Dense(1, activation='sigmoid'))
 
 model.layers[0].set_weights([embedding_matrix])
@@ -83,21 +83,5 @@ history = model.fit(
 
 model.save_weights('pre_trained_glove_model.h5')
 
-print(history.history['loss', 'val_loss', 'acc', 'val_acc'])
-
-import matplotlib.pyplot as plt
-acc = history.history['acc']
-val_acc = history.history['val_acc']
-loss = history.history['loss']
-val_loss = history.history['val_loss']
-epochs = range(1, len(acc) + 1)
-plt.plot(epochs, acc, 'bo', label='Training acc')
-plt.plot(epochs, val_acc, 'b', label='Validation acc')
-plt.title('Training and validation accuracy')
-plt.legend()
-plt.figure()
-plt.plot(epochs, loss, 'bo', label='Training loss')
-plt.plot(epochs, val_loss, 'b', label='Validation loss')
-plt.title('Training and validation loss')
-plt.legend()
-plt.show()
+import utils
+utils.plot(history.history)
