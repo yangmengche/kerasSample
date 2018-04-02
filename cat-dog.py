@@ -137,12 +137,19 @@ for data_batch, labels_batch in train_generator:
 	print('labels batch shape:', labels_batch.shape)
 	break
 
+from keras.callbacks import TensorBoard
+
+callbacks=[
+	TensorBoard(log_dir='my_log_dir', histogram_freq=1)
+]
+
 history = model.fit_generator(
   train_generator,
   steps_per_epoch=100,
   epochs=30,
   validation_data=validation_generator,
-  validation_steps=50)
+  validation_steps=50,
+	callbacks = callbacks)
 
 model.save('cats_and_dogs_small_1.h5')
 

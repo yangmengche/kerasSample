@@ -2,3 +2,4 @@ kaggle
 imdb
 *.h5
 *.csv
+my_log_dir
